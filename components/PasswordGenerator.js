@@ -2,6 +2,65 @@
 
 import { useState, useEffect } from 'react'
 
+// SVG Circular Progress Helper
+function StrengthCircle({ percentage = 0, label = 'NONE', color = '#64748b' }) {
+  const radius = 36;
+  const stroke = 6;
+  const normalized = radius - stroke / 2;
+  const circ = 2 * Math.PI * normalized;
+  const pct = Math.max(0, Math.min(100, percentage));
+  const dash = circ * (1 - pct / 100);
+
+  return (
+    <svg width="80" height="80" style={{position:'relative', zIndex:1, display:'block'}}>
+      <circle
+        cx="40"
+        cy="40"
+        r={normalized}
+        fill="rgba(15,23,42,0.8)"
+        stroke="#21294d"
+        strokeWidth={stroke}
+      />
+      <circle
+        cx="40"
+        cy="40"
+        r={normalized}
+        fill="none"
+        stroke={color}
+        strokeWidth={stroke}
+        strokeDasharray={circ}
+        strokeDashoffset={dash}
+        strokeLinecap="round"
+        style={{transition:'stroke-dashoffset 0.6s cubic-bezier(.6,0,.35,1)', filter:'drop-shadow(0 0 6px '+color+'99)'}}
+      />
+      <text
+        x="50%"
+        y="50%"
+        dominantBaseline="central"
+        textAnchor="middle"
+        fontSize="14"
+        fontWeight="bold"
+        fill={color}
+        style={{letterSpacing: '2px', textShadow:'0 1px 8px #09131e'}}
+      >
+        {label}
+      </text>
+      <text
+        x="50%"
+        y="66%"
+        dominantBaseline="central"
+        textAnchor="middle"
+        fontSize="12"
+        fill={color}
+        fontWeight={600}
+        style={{opacity: 0.8, letterSpacing: '1px'}}
+      >
+        {percentage}%
+      </text>
+    </svg>
+  );
+}
+
 export default function PasswordGenerator() {
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(16)
@@ -93,39 +152,10 @@ export default function PasswordGenerator() {
             </button>
           )}
         </div>
-        <div className="strength-circle" style={{
-          boxShadow: `0 0 30px ${strength.color}80, inset 0 0 20px ${strength.color}20`,
-          color: strength.color
-        }}>
-          {strength.label}
+        <div style={{marginLeft: '12px'}}>
+          <StrengthCircle label={strength.label} percentage={strength.percentage} color={strength.color} />
         </div>
       </div>
-      
-      {password && (
-        <div style={{
-          marginBottom: '24px',
-          padding: '12px',
-          background: `${strength.color}15`,
-          border: `1px solid ${strength.color}30`,
-          borderRadius: '12px',
-          fontSize: '0.9rem',
-          color: 'var(--text-lighter)'
-        }}>
-          <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '8px'}}>
-            <span>Password Strength</span>
-            <span style={{fontWeight: '700', color: strength.color}}>{strength.percentage}%</span>
-          </div>
-          <div style={{height: '6px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '3px', overflow: 'hidden'}}>
-            <div style={{
-              height: '100%',
-              width: `${strength.percentage}%`,
-              background: strength.color,
-              transition: 'all 0.5s ease',
-              borderRadius: '3px'
-            }} />
-          </div>
-        </div>
-      )}
       
       <div className="options-row">
         <label className="option-label">
@@ -186,5 +216,6 @@ export default function PasswordGenerator() {
         100% client-side generation - your password never touches our servers
       </div>
     </div>
-  )
+  );
 }
+
