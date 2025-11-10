@@ -1,0 +1,354 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-dark: #181f3a;
+  --navy-medium: #21284d;
+  --navy-card: #22294c;
+  --blue-primary: #2563eb;
+  --blue-hover: #3275f7;
+  --accent-green: #22d6a7;
+  --text-light: #b1b8d6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+  color: white;
+  min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.site-header {
+  background: rgba(24, 31, 58, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--accent-green);
+}
+
+/* Hero Section */
+.hero {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.hero p {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+/* Central Card */
+.central-card {
+  background: var(--navy-card);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(22, 34, 63, 0.3);
+  padding: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Password Display */
+.password-display-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.password-input {
+  flex: 1;
+  background: var(--navy-dark);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-size: 1.25rem;
+  font-family: 'Courier New', monospace;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.password-input::placeholder {
+  color: var(--text-light);
+}
+
+/* Strength Meter Circle */
+.strength-circle {
+  width: 72px;
+  height: 72px;
+  background: var(--navy-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--accent-green);
+  box-shadow: 0 0 20px rgba(34, 214, 167, 0.3);
+}
+
+/* Options Row */
+.options-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.option-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Length Slider */
+.length-control {
+  margin-bottom: 24px;
+}
+
+.length-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.length-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--navy-dark);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.length-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--blue-primary);
+  cursor: pointer;
+}
+
+.length-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--blue-primary);
+  cursor: pointer;
+  border: none;
+}
+
+/* Generate Button */
+.generate-btn {
+  width: 100%;
+  background: var(--blue-primary);
+  color: white;
+  border: none;
+  border-radius: 32px;
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.generate-btn:hover {
+  background: var(--blue-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+}
+
+/* Feature Cards */
+.features-section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.features-heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  color: white;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  background: white;
+  color: var(--navy-medium);
+  border-radius: 18px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  margin: 0 auto 16px;
+  width: 48px;
+  height: 48px;
+}
+
+.feature-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--navy-medium);
+}
+
+.feature-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Footer */
+.site-footer {
+  background: var(--navy-dark);
+  padding: 40px 20px 20px;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .central-card {
+    padding: 24px;
+  }
+  
+  .password-display-row {
+    flex-direction: column;
+  }
+  
+  .strength-circle {
+    margin: 0 auto;
+  }
+  
+  .options-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
