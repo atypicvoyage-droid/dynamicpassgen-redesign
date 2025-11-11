@@ -1,13 +1,13 @@
 'use client';
 
-export default function ScrollLink({ href, children, className = '', style = {} }) {
+export default function ScrollLink({ href, children, className = '', style = {}, onClick }) {
   const handleClick = (e) => {
     e.preventDefault();
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
-    
+
     if (element) {
-      const headerOffset = 80; // Adjust based on your header height
+      const headerOffset = 80; // Adjust to match your header height
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -15,6 +15,11 @@ export default function ScrollLink({ href, children, className = '', style = {} 
         top: offsetPosition,
         behavior: 'smooth'
       });
+    }
+
+    // Optionally trigger any analytics or other click logic
+    if (typeof onClick === "function") {
+      onClick(e);
     }
   };
 
