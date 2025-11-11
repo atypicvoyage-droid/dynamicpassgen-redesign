@@ -131,14 +131,14 @@ export default function PasswordGeneratorPanel() {
   }
 
   return (
-    <section style={{ marginTop: 24, padding: '0 20px' }}>
+    <section style={{ marginTop: 24, padding: '0 0' }}>
       <div style={{ 
         maxWidth: 700, 
         borderRadius: 24, 
         margin: '0 auto', 
         background: '#ffffff', 
         boxShadow: '0 4px 24px rgba(0,0,0,0.08)', 
-        padding: '36px 32px',
+        padding: '36px 12px',
         border: '1px solid #e2e8f0'
       }}>
         {/* Tabs */}
@@ -148,7 +148,7 @@ export default function PasswordGeneratorPanel() {
               key={tab.value} 
               onClick={() => setMode(tab.value)} 
               style={{ 
-                padding: '12px 32px', 
+                padding: '12px 20px', 
                 border: 'none', 
                 borderRadius: 12, 
                 background: mode === tab.value ? '#3b82f6' : '#f1f5f9', 
