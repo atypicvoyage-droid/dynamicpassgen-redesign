@@ -1,0 +1,17 @@
+/* app/guides/guides.css */
+.toc-link:hover {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+}
+
+.related-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15) !important;
+  border-color: #3b82f6 !important;
+}
+
+.article-content img {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin: 32px 0;
+}
