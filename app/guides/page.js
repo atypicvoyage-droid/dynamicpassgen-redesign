@@ -1,76 +1,118 @@
-// app/guides/page.js
+// app/guides/page.js - SEO OPTIMIZED
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Link from 'next/link'
+import Script from 'next/script' // Import Script for JSON-LD
 import { getAllGuides } from '@/lib/mdx'
+import GuidesClient from './GuidesClient'
 
 export const metadata = {
-  title: 'Password Security Guides & Best Practices 2025 | DynamicPassGen',
-  description: 'Expert guides on password security, NIST compliance, 2FA, and digital protection.',
+  title: 'Password Security Guides & Best Practices | DynamicPassGen',
+  description: 'Browse our comprehensive library of expert guides on password security, NIST compliance, 2FA, and digital protection strategies.',
+  keywords: 'password security guides, NIST compliance, 2FA guides, cybersecurity tutorials, password management best practices',
+  openGraph: {
+    title: 'Password Security Guides & Best Practices',
+    description: 'Expert guides on password security, NIST compliance, and digital protection.',
+    type: 'website',
+    url: 'https://dynamicpassgen.com/guides',
+    siteName: 'DynamicPassGen',
+  },
+  alternates: {
+    canonical: 'https://dynamicpassgen.com/guides',
+  }
 }
 
 export default function GuidesPage() {
   const guides = getAllGuides()
-  
-  // Group by category
-  const categorized = guides.reduce((acc, guide) => {
-    const cat = guide.category || 'general'
-    if (!acc[cat]) acc[cat] = []
-    acc[cat].push(guide)
-    return acc
-  }, {})
+
+  // 1. Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://dynamicpassgen.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Guides",
+        "item": "https://dynamicpassgen.com/guides"
+      }
+    ]
+  }
+
+  // 2. CollectionPage Schema (Best for blog/guide indexes)
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Password Security Guides",
+    "description": "Expert guides on password security, NIST compliance, 2FA, and digital protection strategies.",
+    "url": "https://dynamicpassgen.com/guides",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": guides.map((guide, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `https://dynamicpassgen.com/guides/${guide.slug}`,
+        "name": guide.title,
+        "description": guide.description
+      }))
+    }
+  }
 
   return (
     <>
+      {/* SEO Schemas */}
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="collection-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+
       <Header />
-      <main style={{ minHeight: '70vh', padding: '60px 20px' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+      
+      <main style={{ minHeight: '100vh', background: '#ffffff' }}>
+        {/* Hero Section */}
+        <div style={{
+          background: '#1a1f36',
+          padding: '80px 20px 60px',
+          textAlign: 'center',
+          borderBottom: '1px solid #2d3548'
+        }}>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', 
+            marginBottom: '20px', 
+            color: 'white', 
+            fontWeight: '800',
+            letterSpacing: '-0.02em'
+          }}>
             Security Guides
           </h1>
-          <p style={{ fontSize: '1.25rem', color: '#64748b', marginBottom: '3rem' }}>
-            Expert guides on password security and digital protection
+          <p style={{ 
+            fontSize: '1.25rem', 
+            color: '#cbd5e1', 
+            maxWidth: '600px', 
+            margin: '0 auto',
+            lineHeight: '1.6'
+          }}>
+            Expert insights, tutorials, and best practices to help you secure your digital life.
           </p>
+        </div>
 
-          {Object.entries(categorized).map(([category, categoryGuides]) => (
-            <div key={category} style={{ marginBottom: '48px' }}>
-              <h2 style={{ fontSize: '2rem', marginBottom: '24px', textTransform: 'capitalize' }}>
-                {category}
-              </h2>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
-                gap: '24px' 
-              }}>
-                {categoryGuides.map(guide => (
-                  <Link
-                    key={guide.slug}
-                    href={`/guides/${guide.slug}`}
-                    style={{
-                      background: 'var(--navy-card)',
-                      padding: '32px',
-                      borderRadius: '16px',
-                      textDecoration: 'none',
-                      color: 'white',
-                      transition: 'transform 0.3s ease'
-                    }}
-                  >
-                    <h3 style={{ fontSize: '1.25rem', marginBottom: '12px' }}>
-                      {guide.title}
-                    </h3>
-                    <p style={{ color: 'var(--text-light)', fontSize: '0.95rem', marginBottom: '16px' }}>
-                      {guide.description}
-                    </p>
-                    <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-                      {guide.readTime} • {guide.difficulty}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px' }}>
+          {/* Pass data to the interactive client component */}
+          <GuidesClient guides={guides} />
         </div>
       </main>
+      
       <Footer />
     </>
   )

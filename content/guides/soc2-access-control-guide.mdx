@@ -1,0 +1,113 @@
+---
+title: "SOC 2 Type II: The Definitive Guide to Access Control & Auth"
+description: "Preparing for a SOC 2 audit? Learn exactly what auditors look for in Access Control (CC6) and Logical Access (CC6.1), from onboarding checklists to quarterly access reviews."
+author: "DynamicPassGen Security Team"
+publishedDate: "2025-02-15"
+updatedDate: "2025-02-15"
+image: "/images/guides/soc2-compliance-hero.jpg"
+readTime: "14 min"
+difficulty: "Advanced"
+category: "compliance"
+keywords: "SOC 2 Type II access control, CC6.1 logical access, quarterly access reviews, SOC 2 password policy, SaaS security audit"
+tableOfContents:
+  - "What is SOC 2 and Why Do You Need It?"
+  - "The Trust Services Criteria (TSC) for Auth"
+  - "Logical Access (CC6.1): The Big Requirement"
+  - "The Quarterly Access Review Ritual"
+  - "Offboarding: The Auditor's Favorite Trap"
+  - "Common Questions Answered"
+faq:
+  - question: "What is the difference between Type I and Type II?"
+    answer: "Type I is a snapshot in time (design of controls). Type II tests effectiveness over a period (usually 6-12 months). Type II is what enterprise customers want."
+  - question: "Do we need SSO for SOC 2?"
+    answer: "Not strictly required, but highly recommended. SSO makes provisioning and deprovisioning much easier to evidence."
+  - question: "How often should we review access?"
+    answer: "Quarterly is the standard best practice. You must document who reviewed it, when, and what changes were made."
+---
+
+## Introduction
+
+If you are a B2B SaaS company selling to enterprise customers, **SOC 2 Type II** is not optional—it is the table stakes for doing business. It is the badge of honor that proves you aren't just "moving fast and breaking things" with their sensitive data.
+
+But staring at the AICPA Trust Services Criteria (TSC) can feel like reading hieroglyphics.
+
+Specifically, **Common Criteria 6 (CC6): Logical and Physical Access Controls** is where most engineering teams stumble. It requires you to prove—with evidence—that only the right people have access to your systems, and that you can kick them out instantly when they leave.
+
+This guide focuses purely on the **Authentication and Access Control** aspects of SOC 2 Type II.
+
+<callout type="info" title="SOC 2 vs. HIPAA/PCI">
+Unlike HIPAA (federal law) or PCI (industry mandate), SOC 2 is a voluntary audit report. However, for SaaS vendors, it is effectively mandatory to close deals with large clients.
+</callout>
+
+## The Trust Services Criteria (TSC) for Auth
+
+SOC 2 covers five "Trust Principles," but **Security** is the only mandatory one. Within Security, **CC6** deals with how you lock the front door.
+
+Your auditor will ask for screenshots, logs, and tickets proving you follow your own rules. "Trust, but verify" is the name of the game.
+
+## Logical Access (CC6.1): The Big Requirement
+
+**Criterion CC6.1:** *"The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events to the extent commensurate with the entity’s objectives."*
+
+Translation: **Do you have a password policy, and does it actually work?**
+
+### The Password Policy Checklist for SOC 2
+To satisfy CC6.1, your policy usually needs:
+1.  **Minimum Length:** 8 chars is the floor; 12+ is preferred.
+2.  **Complexity:** Complexity rules are fading (thanks to NIST), but you need to justify your choice.
+3.  **MFA:** Mandatory for accessing the production environment (AWS/GCP/Azure) and source code (GitHub/GitLab).
+4.  **Encryption:** Data at rest (databases) and in transit (TLS 1.2+) must be encrypted.
+
+<keytakeaway>
+For SOC 2, **evidence is everything**. Configuring a password policy isn't enough; you need a screenshot of the AWS IAM configuration page showing the policy is active.
+</keytakeaway>
+
+## The Quarterly Access Review Ritual
+
+This is the most tedious part of SOC 2 compliance, but it's critical.
+
+**Requirement:** You must periodically review who has access to what.
+**Frequency:** Typically **Quarterly**.
+
+### How to do it:
+1.  **Export a list** of all users from your critical systems (Cloud Provider, Database, GitHub, Admin Panel).
+2.  **The Meeting:** The CTO or Security Lead reviews the list line-by-line.
+3.  **Action:** Remove anyone who changed roles or doesn't need access anymore.
+4.  **Evidence:** Save the spreadsheet, the meeting notes, and the Jira tickets for any removals. The auditor *will* ask for "Q3 2024 Access Review evidence."
+
+## Offboarding: The Auditor's Favorite Trap
+
+The easiest way to get a "finding" (a black mark) on your report is messy offboarding.
+
+**Scenario:** An employee leaves on Friday. HR knows. But their AWS access isn't revoked until Tuesday.
+**The Result:** Exception noted in your report.
+
+### The 24-Hour Rule
+Most auditors expect access to be revoked within **24 hours** (or 1 business day) of termination.
+
+**Best Practice:** Automate this via an Identity Provider (IdP) like Okta or Rippling. When HR terminates a user in the directory, they instantly lose access to AWS, Slack, GitHub, and Jira simultaneously.
+
+<quicktips>
+
+- Implement **Single Sign-On (SSO)**. It reduces your attack surface to one set of credentials per user and makes offboarding instant.
+- Use "Role-Based Access Control" (RBAC). Give permissions to the "Senior Engineer" role, not to "Dave". When Dave leaves, the role stays secure.
+- Document "Exceptions." If someone needs temporary admin access, log the approval and the revocation.
+
+</quicktips>
+
+## Common Questions Answered
+
+### Can developers have access to Production data?
+Ideally, **no**. SOC 2 pushes for "Separation of Duties." Developers write code; CI/CD pipelines deploy it. If a dev needs to debug Prod, they should use temporary, audited access credentials.
+
+### Do we need to background check employees?
+Yes (CC1.1). Part of access control is knowing *who* you are giving keys to. Background checks are a standard control auditors look for before access is granted.
+
+### What about contractors?
+They need the same level of scrutiny. Their access should be limited, time-bound, and reviewed quarterly just like full-time staff.
+
+## Conclusion
+
+SOC 2 Type II is a marathon, not a sprint. It forces you to mature your processes.
+
+By implementing **MFA everywhere**, automating **offboarding**, and rigorously performing your **Quarterly Access Reviews**, you turn access control from a chaotic mess into a well-oiled machine. And that doesn't just get you a compliance badge—it builds a company that large enterprises can trust.
