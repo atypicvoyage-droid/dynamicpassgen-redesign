@@ -1,6 +1,6 @@
 // app/sitemap.js
 
-import { getAllGuides } from './lib/mdx'; // Make sure this path is correct
+import { getAllGuides } from '@/lib/mdx'; // Make sure this path is correct
 
 const URL = "https://dynamicpassgen.com";
 
