@@ -1,7 +1,7 @@
-// app/guides/page.js - SEO OPTIMIZED
+// app/guides/page.js - SEO OPTIMIZED WITH DARK MODE
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Script from 'next/script' // Import Script for JSON-LD
+import Script from 'next/script'
 import { getAllGuides } from '@/lib/mdx'
 import GuidesClient from './GuidesClient'
 
@@ -24,7 +24,6 @@ export const metadata = {
 export default function GuidesPage() {
   const guides = getAllGuides()
 
-  // 1. Breadcrumb Schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -44,7 +43,6 @@ export default function GuidesPage() {
     ]
   }
 
-  // 2. CollectionPage Schema (Best for blog/guide indexes)
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -65,7 +63,6 @@ export default function GuidesPage() {
 
   return (
     <>
-      {/* SEO Schemas */}
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
@@ -79,36 +76,20 @@ export default function GuidesPage() {
 
       <Header />
       
-      <main style={{ minHeight: '100vh', background: '#ffffff' }}>
-        {/* Hero Section */}
-        <div style={{
-          background: '#1a1f36',
-          padding: '80px 20px 60px',
-          textAlign: 'center',
-          borderBottom: '1px solid #2d3548'
-        }}>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', 
-            marginBottom: '20px', 
-            color: 'white', 
-            fontWeight: '800',
-            letterSpacing: '-0.02em'
-          }}>
-            Security Guides
-          </h1>
-          <p style={{ 
-            fontSize: '1.25rem', 
-            color: '#cbd5e1', 
-            maxWidth: '600px', 
-            margin: '0 auto',
-            lineHeight: '1.6'
-          }}>
-            Expert insights, tutorials, and best practices to help you secure your digital life.
-          </p>
+      <main className="min-h-screen bg-white dark:bg-gray-950">
+        {/* Hero Section - Dark Mode Compatible */}
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 dark:from-gray-950 dark:to-gray-900 border-b border-slate-700/50 dark:border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-5 tracking-tight">
+              Security Guides
+            </h1>
+            <p className="text-lg sm:text-xl text-slate-300 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              Expert insights, tutorials, and best practices to help you secure your digital life.
+            </p>
+          </div>
         </div>
 
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px' }}>
-          {/* Pass data to the interactive client component */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <GuidesClient guides={guides} />
         </div>
       </main>

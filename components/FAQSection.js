@@ -1,15 +1,8 @@
 // components/FAQSection.js
 'use client'
-import { useState } from 'react'
 import Script from 'next/script'
 
 export default function FAQSection({ faqs }) {
-  const [openIndex, setOpenIndex] = useState(null)
-
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
-
   const defaultFaqs = [
     {
       question: "Is this password generator really secure?",
@@ -89,55 +82,61 @@ export default function FAQSection({ faqs }) {
         }}
       />
 
-      <section className="content-section">
-        <div className="content-container">
-          <h2 className="section-heading">Frequently Asked Questions</h2>
-          <p className="section-description" style={{ textAlign: 'center', marginBottom: '32px', color: '#64748b' }}>
+      <section style={{
+        marginTop: '64px',
+        padding: '40px 20px',
+        background: 'var(--card-bg)',
+        borderRadius: '20px',
+        border: '2px solid var(--border-color)'
+      }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <h2 style={{
+            fontSize: '2rem',
+            marginBottom: '16px',
+            textAlign: 'center',
+            color: 'var(--text-primary)',
+            fontWeight: '800'
+          }}>
+            Frequently Asked Questions
+          </h2>
+          <p style={{
+            textAlign: 'center',
+            marginBottom: '32px',
+            color: 'var(--text-secondary)',
+            fontSize: '1rem',
+            lineHeight: '1.6'
+          }}>
             Everything you need to know about password security and our free generator tool
           </p>
           
-          <div className="faq-container">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {faqList.map((faq, index) => (
-              <div 
-                key={index} 
-                className={`faq-item ${openIndex === index ? 'faq-item-open' : ''}`}
+              <details
+                key={index}
                 style={{
-                  borderBottom: '1px solid #e2e8f0',
-                  marginBottom: '0'
+                  padding: '24px',
+                  background: 'var(--card-alt-bg)',
+                  borderRadius: '12px',
+                  border: '1px solid var(--border-color)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="faq-question-button"
-                  aria-expanded={openIndex === index}
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    padding: '24px 0',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: '16px'
-                  }}
-                >
-                  <h3 
-                    className="faq-question" 
-                    style={{ 
-                      margin: 0, 
-                      fontSize: '18px', 
-                      fontWeight: '600',
-                      color: '#1e293b',
-                      flex: 1
-                    }}
-                  >
-                    {faq.question}
-                  </h3>
+                <summary style={{
+                  fontSize: '1.125rem',
+                  fontWeight: '700',
+                  color: 'var(--text-primary)',
+                  cursor: 'pointer',
+                  listStyle: 'none',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '16px'
+                }}>
+                  <span>{faq.question}</span>
                   <svg
-                    width="24"
-                    height="24"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -145,41 +144,41 @@ export default function FAQSection({ faqs }) {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     style={{
-                      transition: 'transform 0.3s ease',
-                      transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)',
                       flexShrink: 0,
-                      color: '#3b82f6'
+                      color: 'var(--accent)',
+                      transition: 'transform 0.2s ease'
                     }}
                   >
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
-                </button>
-                
-                <div 
-                  className="faq-answer-wrapper"
-                  style={{
-                    maxHeight: openIndex === index ? '1000px' : '0',
-                    overflow: 'hidden',
-                    transition: 'max-height 0.3s ease'
-                  }}
-                >
-                  <p 
-                    className="faq-answer" 
-                    style={{ 
-                      paddingBottom: '24px',
-                      color: '#475569',
-                      lineHeight: '1.7',
-                      fontSize: '16px'
-                    }}
-                  >
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
+                </summary>
+                <p style={{
+                  color: 'var(--text-secondary)',
+                  lineHeight: '1.8',
+                  marginTop: '16px',
+                  fontSize: '1rem'
+                }}>
+                  {faq.answer}
+                </p>
+              </details>
             ))}
           </div>
         </div>
       </section>
+
+      <style jsx>{`
+        details[open] summary svg {
+          transform: rotate(180deg);
+        }
+        
+        details:hover {
+          border-color: var(--accent);
+        }
+        
+        summary::-webkit-details-marker {
+          display: none;
+        }
+      `}</style>
     </>
   )
 }

@@ -1,4 +1,4 @@
-// app/guides/[slug]/GuideContent.js - IMAGE BELOW TOC
+// app/guides/[slug]/GuideContent.js - MAXIMUM CONTRAST FOR DARK MODE
 'use client'
 
 import { useEffect } from 'react'
@@ -12,32 +12,26 @@ import Link from 'next/link'
 
 export default function GuideContent({ content, frontmatter, featuredImage, formattedDate }) {
   
-  // Smooth scrolling logic
   useEffect(() => {
     const handleSmoothScroll = (e) => {
-      // Find the closest anchor tag (in case user clicks a span inside the a tag)
       const link = e.target.closest('a');
       if (!link) return;
 
       const href = link.getAttribute('href');
       
-      // Only intercept internal hash links
       if (href && href.startsWith('#')) {
-        e.preventDefault(); // STOP the instant jump
+        e.preventDefault();
         
         const id = href.substring(1);
         const element = document.getElementById(id);
         
         if (element) {
-          // 1. Update URL without jumping
           window.history.pushState(null, '', href);
 
-          // 2. Calculate offset for fixed header
           const headerOffset = 100;
           const elementPosition = element.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
-          // 3. Scroll smoothly
           window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
@@ -46,11 +40,6 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
       }
     };
 
-    // Attach event listener to the TOC container instead of individual links
-    // This is more robust (event delegation)
-    const tocNav = document.querySelector('nav[aria-label="Table of Contents"]'); // Or select by class if you have one
-    
-    // Fallback: select all links if container not found easily
     const links = document.querySelectorAll('.toc-link');
     
     links.forEach(link => {
@@ -65,41 +54,28 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
   }, [content]);
 
   return (
-    <>
-      {/* Hero Section - Clean without image overlap */}
-      <div style={{
-        background: '#1a1f36',
-        padding: '48px 20px 48px',
-        borderBottom: '1px solid #2d3548'
-      }}>
-        <div style={{ maxWidth: '820px', margin: '0 auto' }}>
-          <nav style={{ fontSize: '0.875rem', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Link href="/" style={{ color: '#8b92a7', textDecoration: 'none' }}>Home</Link>
-            <span style={{ color: '#4a5568' }}>/</span>
-            <Link href="/guides" style={{ color: '#8b92a7', textDecoration: 'none' }}>Guides</Link>
-            <span style={{ color: '#4a5568' }}>/</span>
-            <span style={{ color: '#60a5fa', textTransform: 'capitalize' }}>{frontmatter.category}</span>
+    <div className="bg-white dark:bg-gray-950 min-h-screen">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 dark:from-gray-950 dark:to-gray-900 border-b border-slate-700/50 dark:border-gray-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+          <nav className="text-sm mb-6 flex items-center gap-2 flex-wrap">
+            <Link href="/" className="text-slate-400 dark:text-gray-300 hover:text-white transition-colors">
+              Home
+            </Link>
+            <span className="text-slate-600 dark:text-gray-500">/</span>
+            <Link href="/guides/" className="text-slate-400 dark:text-gray-300 hover:text-white transition-colors">
+              Guides
+            </Link>
+            <span className="text-slate-600 dark:text-gray-500">/</span>
+            <span className="text-blue-400 capitalize">{frontmatter.category}</span>
           </nav>
 
-          <h1 style={{
-            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            marginBottom: '20px',
-            fontWeight: '800',
-            lineHeight: '1.25',
-            color: '#ffffff',
-            letterSpacing: '-0.02em'
-          }}>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-5 leading-tight tracking-tight">
             {frontmatter.title}
           </h1>
 
           {frontmatter.description && (
-            <p style={{
-              fontSize: '1.125rem',
-              lineHeight: '1.7',
-              color: '#cbd5e1',
-              marginBottom: '0',
-              fontWeight: '400'
-            }}>
+            <p className="text-lg text-slate-200 dark:text-gray-200 leading-relaxed">
               {frontmatter.description}
             </p>
           )}
@@ -107,141 +83,57 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
       </div>
 
       {/* Meta Bar */}
-      <div style={{
-        background: '#f8fafc',
-        borderBottom: '1px solid #e2e8f0',
-        padding: '20px'
-      }}>
-        <div style={{ 
-          maxWidth: '820px', 
-          margin: '0 auto', 
-          display: 'flex', 
-          flexWrap: 'wrap', 
-          gap: '24px', 
-          alignItems: 'center', 
-          fontSize: '0.875rem', 
-          color: '#64748b' 
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ 
-              width: '24px', 
-              height: '24px', 
-              borderRadius: '50%', 
-              background: '#e2e8f0',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
+      <div className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-wrap gap-6 items-center text-sm text-gray-600 dark:text-gray-300">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
               👤
             </div>
-            <span style={{ fontWeight: 600, color: '#334155' }}>
+            <span className="font-semibold text-gray-900 dark:text-white">
               {frontmatter.author || "DynamicPassGen Team"}
             </span>
           </div>
 
           {formattedDate !== 'N/A' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div className="flex items-center gap-2">
               <span>📅</span>
               <span>Updated {formattedDate}</span>
             </div>
           )}
 
           {frontmatter.readTime && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div className="flex items-center gap-2">
               <span>⏱️</span>
               <span>{frontmatter.readTime}</span>
             </div>
           )}
 
           {frontmatter.difficulty && (
-            <span style={{
-              padding: '4px 12px',
-              background: '#eff6ff',
-              color: '#2563eb',
-              borderRadius: '20px',
-              fontSize: '0.75rem',
-              fontWeight: '700',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
-            }}>
+            <span className="px-3 py-1 bg-blue-100 dark:bg-blue-600 text-blue-700 dark:text-white rounded-full text-xs font-bold uppercase tracking-wide">
               {frontmatter.difficulty}
             </span>
           )}
         </div>
       </div>
 
-      <article style={{
-        maxWidth: '820px',
-        margin: '0 auto',
-        padding: '48px 20px'
-      }}>
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Table of Contents */}
         {frontmatter.tableOfContents && frontmatter.tableOfContents.length > 0 && (
-          <nav style={{
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderRadius: '12px',
-            padding: '32px',
-            marginBottom: '48px',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-          }}>
-            <h2 style={{
-              fontSize: '1.125rem',
-              marginBottom: '20px',
-              fontWeight: '700',
-              color: '#1e293b',
-              margin: '0',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
+          <nav className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 mb-12 shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-5 flex items-center gap-2">
               <span>📋</span> Table of Contents
             </h2>
-            <ol style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px'
-            }}>
+            <ol className="space-y-3">
               {frontmatter.tableOfContents.map((item, index) => (
                 <li key={index}>
                   <a
                     href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="toc-link"
-                    style={{
-                      color: '#475569',
-                      textDecoration: 'none',
-                      fontSize: '0.95rem',
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '12px',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      transition: 'all 0.2s ease',
-                      cursor: 'pointer',
-                      lineHeight: '1.5'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = '#f1f5f9';
-                      e.target.style.color = '#0f172a';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'transparent';
-                      e.target.style.color = '#475569';
-                    }}
+                    className="toc-link flex items-start gap-3 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-all"
                   >
-                    <span style={{ 
-                      color: '#94a3b8', 
-                      fontWeight: '600', 
-                      minWidth: '20px',
-                      fontSize: '0.85rem',
-                      marginTop: '1px'
-                    }}>
+                    <span className="text-gray-400 dark:text-gray-400 font-semibold min-w-[24px] text-sm mt-0.5">
                       {index + 1}.
                     </span>
-                    <span>{item}</span>
+                    <span className="leading-relaxed">{item}</span>
                   </a>
                 </li>
               ))}
@@ -249,41 +141,50 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
           </nav>
         )}
 
-        {/* FEATURED IMAGE - Moved here, below TOC */}
+        {/* Featured Image */}
         {featuredImage && (
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: '0 10px 30px -5px rgba(0,0,0,0.1)',
-            border: '1px solid #e2e8f0',
-            marginBottom: '56px' // Space before content starts
-          }}>
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 mb-12">
             <Image
               src={featuredImage}
               alt={frontmatter.title}
               width={1200}
               height={630}
               priority
-              style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block'
-              }}
+              className="w-full h-auto"
             />
           </div>
         )}
 
-        {/* Markdown Content */}
-        <div className="prose-content">
+        {/* Markdown Content - MAXIMUM CONTRAST */}
+        <div className="prose prose-lg dark:prose-invert max-w-none
+          prose-headings:font-bold prose-headings:tracking-tight
+          prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:text-gray-900 dark:prose-h2:text-white
+          prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-gray-900 dark:prose-h3:text-white
+          prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3 prose-h4:text-gray-900 dark:prose-h4:text-gray-100
+          prose-p:text-gray-700 dark:prose-p:text-gray-100 prose-p:leading-relaxed
+          prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+          prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-bold
+          prose-em:text-gray-700 dark:prose-em:text-gray-100
+          prose-code:text-pink-600 dark:prose-code:text-pink-300 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm prose-code:font-medium
+          prose-pre:bg-gray-900 dark:prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:border prose-pre:border-gray-700
+          prose-ul:text-gray-700 dark:prose-ul:text-gray-100
+          prose-ol:text-gray-700 dark:prose-ol:text-gray-100
+          prose-li:text-gray-700 dark:prose-li:text-gray-100 prose-li:marker:text-gray-500 dark:prose-li:marker:text-gray-400
+          prose-blockquote:border-l-blue-500 prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-100 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-950/40 prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:rounded-r
+          prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-gray-200 dark:prose-img:border-gray-700
+          prose-hr:border-gray-200 dark:prose-hr:border-gray-700
+          prose-table:border-collapse prose-table:w-full
+          prose-thead:bg-gray-100 dark:prose-thead:bg-gray-800
+          prose-th:text-gray-900 dark:prose-th:text-white prose-th:font-bold prose-th:p-3 prose-th:border prose-th:border-gray-300 dark:prose-th:border-gray-700
+          prose-td:text-gray-700 dark:prose-td:text-gray-100 prose-td:p-3 prose-td:border prose-td:border-gray-300 dark:prose-td:border-gray-700
+          prose-tr:border-b prose-tr:border-gray-200 dark:prose-tr:border-gray-800"
+        >
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
             components={{
               ...MDXComponents,
               h1: () => null,
-              // map lower-case HTML tags to your React components
               callout: MDXComponents.Callout,
               quicktips: MDXComponents.QuickTips,
               keytakeaway: MDXComponents.KeyTakeaway,
@@ -295,6 +196,6 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
 
         <AuthorBio />
       </article>
-    </>
+    </div>
   )
 }

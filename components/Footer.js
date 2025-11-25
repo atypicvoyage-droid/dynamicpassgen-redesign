@@ -34,13 +34,13 @@ export default function Footer() {
             </div>
           </div>
           
-          <div>
+          {/* <div>
             <h4 style={{color: 'white', fontWeight: '700', marginBottom: '16px', fontSize: '1rem'}}>Company</h4>
             <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
               <a href="https://github.com" target="_blank" rel="noopener" className="footer-link">GitHub</a>
               <a href="https://twitter.com" target="_blank" rel="noopener" className="footer-link">Twitter</a>
             </div>
-          </div>
+          </div> */}
         </div>
         
         <div style={{borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '32px'}}>
