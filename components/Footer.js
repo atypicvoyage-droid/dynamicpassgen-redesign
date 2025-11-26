@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { trackClick } from '@/lib/withGAClick'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -10,37 +13,83 @@ export default function Footer() {
           <div>
             <h4 style={{color: 'white', fontWeight: '700', marginBottom: '16px', fontSize: '1rem'}}>Product</h4>
             <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-              <Link href="/" className="footer-link">Password Generator</Link>
-              <Link href="/tools/strength-checker" className="footer-link">Strength Checker</Link>
-              <Link href="/tools/breach-checker" className="footer-link">Breach Checker</Link>
-              <Link href="/tools/security-score" className="footer-link">Security Score</Link>
+              <Link 
+                href="/" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Password Generator', 'Footer Navigation')}
+              >
+                Password Generator
+              </Link>
+              <Link 
+                href="/tools/strength-checker" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Strength Checker', 'Footer Navigation')}
+              >
+                Strength Checker
+              </Link>
+              <Link 
+                href="/tools/breach-checker" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Breach Checker', 'Footer Navigation')}
+              >
+                Breach Checker
+              </Link>
+              <Link 
+                href="/tools/security-score" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Security Score', 'Footer Navigation')}
+              >
+                Security Score
+              </Link>
             </div>
           </div>
           
           <div>
             <h4 style={{color: 'white', fontWeight: '700', marginBottom: '16px', fontSize: '1rem'}}>Resources</h4>
             <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-              <Link href="/guides" className="footer-link">Security Guides</Link>
-              <Link href="/about" className="footer-link">About Us</Link>
-              <Link href="/contact" className="footer-link">Contact</Link>
+              <Link 
+                href="/guides" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Security Guides', 'Footer Navigation')}
+              >
+                Security Guides
+              </Link>
+              <Link 
+                href="/about" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - About Us', 'Footer Navigation')}
+              >
+                About Us
+              </Link>
+              <Link 
+                href="/contact" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Contact', 'Footer Navigation')}
+              >
+                Contact
+              </Link>
             </div>
           </div>
           
           <div>
             <h4 style={{color: 'white', fontWeight: '700', marginBottom: '16px', fontSize: '1rem'}}>Legal</h4>
             <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-              <Link href="/privacy" className="footer-link">Privacy Policy</Link>
-              <Link href="/terms" className="footer-link">Terms of Service</Link>
+              <Link 
+                href="/privacy" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Privacy Policy', 'Footer Navigation')}
+              >
+                Privacy Policy
+              </Link>
+              <Link 
+                href="/terms" 
+                className="footer-link"
+                onClick={() => trackClick('Footer - Terms of Service', 'Footer Navigation')}
+              >
+                Terms of Service
+              </Link>
             </div>
           </div>
-          
-          {/* <div>
-            <h4 style={{color: 'white', fontWeight: '700', marginBottom: '16px', fontSize: '1rem'}}>Company</h4>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-              <a href="https://github.com" target="_blank" rel="noopener" className="footer-link">GitHub</a>
-              <a href="https://twitter.com" target="_blank" rel="noopener" className="footer-link">Twitter</a>
-            </div>
-          </div> */}
         </div>
         
         <div style={{borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '32px'}}>

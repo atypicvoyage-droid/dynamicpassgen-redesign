@@ -4,12 +4,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { trackClick } from '@/lib/withGAClick'
 
 // To handle item-specific hover states cleanly, we create a small local component.
 function ToolLink({ href, children }) {
   const [isHovered, setIsHovered] = useState(false)
   const pathname = usePathname()
   const isActive = pathname === href || pathname === href + '/' || pathname + '/' === href
+
+  const handleClick = () => {
+    trackClick(`Header Tool Link - ${children}`, 'Navigation')
+  }
 
   const style = {
     display: 'block',
@@ -36,6 +41,7 @@ function ToolLink({ href, children }) {
     <Link
       href={href}
       style={style}
+      onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -117,7 +123,11 @@ export default function Header() {
       <header className="site-header" ref={headerRef}>
         <div className="header-content">
           {/* Logo - switches based on dark mode */}
-          <Link href="/" className="logo logo-desktop">
+          <Link 
+            href="/" 
+            className="logo logo-desktop"
+            onClick={() => trackClick('Header Logo', 'Navigation')}
+          >
             <Image
               src={isDarkMode ? "/images/logo-dark.png" : "/images/logo-big.png"}
               alt="DynamicPassGen Logo" 
@@ -127,7 +137,11 @@ export default function Header() {
               style={{ width: 'auto', height: '50px', objectFit: 'contain' }}
             />
           </Link>
-          <Link href="/" className="logo logo-mobile">
+          <Link 
+            href="/" 
+            className="logo logo-mobile"
+            onClick={() => trackClick('Header Logo Mobile', 'Navigation')}
+          >
             <Image
               src={isDarkMode ? "/images/logo-dark.png" : "/images/logo-big.png"}
               alt="DynamicPassGen Logo" 
@@ -142,6 +156,7 @@ export default function Header() {
             <Link 
               href="/" 
               className="nav-link"
+              onClick={() => trackClick('Header Nav - Generator', 'Navigation')}
               style={{ 
                 color: isDarkMode ? '#e5e7eb' : 'var(--text-primary)',
                 ...(isLinkActive('/') && { color: '#2563eb', fontWeight: 600 })
@@ -152,6 +167,7 @@ export default function Header() {
             <Link 
               href="/guides/" 
               className="nav-link"
+              onClick={() => trackClick('Header Nav - Security Guides', 'Navigation')}
               style={{ 
                 color: isDarkMode ? '#e5e7eb' : 'var(--text-primary)',
                 ...(isOnGuidesPage && { color: '#2563eb', fontWeight: 600 })
@@ -164,7 +180,10 @@ export default function Header() {
               <button
                 type="button"
                 className="nav-link"
-                onClick={() => setToolsOpen((v) => !v)}
+                onClick={() => {
+                  setToolsOpen((v) => !v)
+                  trackClick('Header Nav - Tools Dropdown', 'Navigation')
+                }}
                 style={{ 
                   display: 'inline-flex', 
                   alignItems: 'center', 
@@ -215,6 +234,7 @@ export default function Header() {
             <Link 
               href="/about/" 
               className="nav-link"
+              onClick={() => trackClick('Header Nav - About', 'Navigation')}
               style={{ 
                 color: isDarkMode ? '#e5e7eb' : 'var(--text-primary)',
                 ...(isLinkActive('/about/') && { color: '#2563eb', fontWeight: 600 })
@@ -225,6 +245,7 @@ export default function Header() {
             <Link 
               href="/contact/" 
               className="nav-link nav-link-cta"
+              onClick={() => trackClick('Header Nav - Get Started CTA', 'CTA')}
             >
               Get Started
             </Link>
@@ -232,7 +253,10 @@ export default function Header() {
 
           <button
             className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen((v) => !v)}
+            onClick={() => {
+              setMobileMenuOpen((v) => !v)
+              trackClick('Mobile Menu Toggle', 'Navigation')
+            }}
             aria-label="Toggle menu"
             style={{ 
               display: isMobileView ? 'block' : 'none',
@@ -252,7 +276,10 @@ export default function Header() {
             <Link 
               href="/" 
               className="mobile-nav-link" 
-              onClick={closeAll}
+              onClick={() => {
+                closeAll()
+                trackClick('Mobile Nav - Generator', 'Navigation')
+              }}
               style={{ 
                 color: isDarkMode ? '#e5e7eb' : 'var(--text-primary)',
                 ...(isLinkActive('/') && { color: '#2563eb', fontWeight: 600 })
@@ -263,7 +290,10 @@ export default function Header() {
             <Link 
               href="/guides/" 
               className="mobile-nav-link" 
-              onClick={closeAll}
+              onClick={() => {
+                closeAll()
+                trackClick('Mobile Nav - Security Guides', 'Navigation')
+              }}
               style={{ 
                 color: isDarkMode ? '#e5e7eb' : 'var(--text-primary)',
                 ...(isOnGuidesPage && { color: '#2563eb', fontWeight: 600 })
@@ -291,7 +321,10 @@ export default function Header() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  onClick={closeAll}
+                  onClick={() => {
+                    closeAll()
+                    trackClick(`Mobile Nav - ${tool.name}`, 'Navigation')
+                  }}
                   style={{
                     display: 'block',
                     padding: '10px 12px',
@@ -309,7 +342,10 @@ export default function Header() {
             <Link 
               href="/about/" 
               className="mobile-nav-link" 
-              onClick={closeAll}
+              onClick={() => {
+                closeAll()
+                trackClick('Mobile Nav - About', 'Navigation')
+              }}
               style={{ 
                 color: isDarkMode ? '#e5e7eb' : 'var(--text-primary)',
                 ...(isLinkActive('/about/') && { color: '#2563eb', fontWeight: 600 })
@@ -320,7 +356,10 @@ export default function Header() {
             <Link 
               href="/contact/" 
               className="mobile-nav-link-cta" 
-              onClick={closeAll}
+              onClick={() => {
+                closeAll()
+                trackClick('Mobile Nav - Get Started CTA', 'CTA')
+              }}
             >
               Get Started
             </Link>

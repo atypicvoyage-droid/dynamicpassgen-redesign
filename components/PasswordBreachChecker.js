@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { trackClick } from '@/lib/withGAClick'
+
 
 export default function PasswordBreachChecker() {
   const [password, setPassword] = useState('')
@@ -11,6 +13,7 @@ export default function PasswordBreachChecker() {
   const [error, setError] = useState(null)
 
   const checkPasswordBreach = async () => {
+    trackClick('Breach Checker - Check Password', 'Tool Interaction')
     if (!password || password.length < 3) {
       setError('Please enter a password to check')
       return
@@ -76,6 +79,7 @@ export default function PasswordBreachChecker() {
 
   const handleClear = () => {
     setPassword('')
+    trackClick('Breach Checker - Clear', 'Tool Interaction')
     setResult(null)
     setError(null)
   }

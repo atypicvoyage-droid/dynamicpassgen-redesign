@@ -1,5 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { trackClick } from '@/lib/withGAClick'
+import { WORD_LIST } from '@/lib/wordlist';
+
 
 const GENERATION_MODES = [
   { label: 'Password', value: 'password' },
@@ -52,13 +55,25 @@ function generatePIN(length) {
 }
 
 function generateRandomPassphrase(wordCount) {
-  const words = ['correct', 'horse', 'battery', 'staple', 'orchid', 'runway', 'rocket', 'teleport', 'thrill', 'marble', 'smile', 'banner', 'yellow', 'lunar', 'mist', 'horizon', 'blaze', 'maroon', 'crystal', 'thunder'];
+  // Fallback to a small list only if the import fails (unlikely)
+  const words = WORD_LIST.length > 0 ? WORD_LIST : ['correct', 'horse', 'battery', 'staple'];
+  
   let result = [];
-  const array = new Uint8Array(wordCount);
+  // Create a typed array to hold random values
+  // We use 32-bit integers for better distribution over a large list
+  const array = new Uint32Array(wordCount);
   window.crypto.getRandomValues(array);
+  
   for (let i = 0; i < wordCount; i++) {
+    // Use modulo to map the random number to a word index
+    // Using a large wordlist (2000+ words) significantly increases entropy
+    // Entropy = wordCount * log2(wordListLength)
+    // For 4 words from 2048 list: 4 * 11 = 44 bits (Strong)
+    // For 5 words from 2048 list: 5 * 11 = 55 bits (Very Strong)
     result.push(words[array[i] % words.length]);
   }
+  
+  // Optional: You can offer different separators like space, dot, or underscore
   return result.join('-');
 }
 
@@ -113,6 +128,7 @@ export default function PasswordGeneratorPanel() {
 
   function handleGenerate() {
     let generated = '';
+    trackClick('Password Generator - Generate Password', 'Tool Interaction');
     if (mode === 'password') generated = generateRandomPassword(options);
     else if (mode === 'pin') generated = generatePIN(options.pinLength);
     else if (mode === 'passphrase') generated = generateRandomPassphrase(options.passphraseWords);
@@ -125,6 +141,7 @@ export default function PasswordGeneratorPanel() {
 
   function onCopy(text) {
     if (!text) return;
+    trackClick('Password Generator - Copy Password', 'Tool Interaction');
     navigator.clipboard.writeText(text);
     setCopyText('Copied!');
     setTimeout(() => setCopyText('Copy'), 1000);
@@ -146,7 +163,7 @@ export default function PasswordGeneratorPanel() {
           {GENERATION_MODES.map(tab => (
             <button 
               key={tab.value} 
-              onClick={() => setMode(tab.value)} 
+              onClick={() => {setMode(tab.value); trackClick(`Password Generator - Switch to ${tab.value}`, 'Tool Interaction')}} 
               style={{ 
                 padding: '12px 20px', 
                 border: 'none', 

@@ -1,5 +1,7 @@
 'use client'
+
 import Link from 'next/link'
+import { trackClick } from '@/lib/withGAClick'
 
 export default function RelatedToolsSection({ tools, title, description }) {
   // Default values
@@ -43,6 +45,7 @@ export default function RelatedToolsSection({ tools, title, description }) {
           <Link
             key={index}
             href={tool.href}
+            onClick={() => trackClick(`Related Tools - ${tool.label}`, 'Tool Navigation')}
             style={{
               padding: '14px 28px',
               background: 'var(--card-bg)',

@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { trackClick } from '@/lib/withGAClick'
+
 
 export default function PasswordStrengthChecker() {
   const [password, setPassword] = useState('')
@@ -253,6 +255,7 @@ export default function PasswordStrengthChecker() {
   }
 
   const handleCheckPassword = () => {
+    trackClick('Strength Checker - Check Password', 'Tool Interaction')
     if (password.length > 0) {
       analyzePassword(password)
     }
@@ -260,6 +263,7 @@ export default function PasswordStrengthChecker() {
 
   const handleClear = () => {
     setPassword('')
+     trackClick('Strength Checker - Reset', 'Tool Interaction')
     setAnalysis(null)
   }
 

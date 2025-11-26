@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react'
 import Link from 'next/link'
+import { trackClick } from '@/lib/withGAClick'
+
 
 export default function SecurityScore() {
   const [answers, setAnswers] = useState({})
@@ -92,7 +94,8 @@ export default function SecurityScore() {
     }
   ]
 
-  const handleAnswer = (questionId, optionValue, points) => {
+  const handleAnswer = (questionId, optionValue, points, text) => {
+    trackClick(`Security Score - Question ${questionId} - ${text}`, 'Assessment')
     setAnswers({
       ...answers,
       [questionId]: { value: optionValue, points }
@@ -100,6 +103,7 @@ export default function SecurityScore() {
   }
 
   const calculateScore = () => {
+    trackClick('Security Score - Submit Assessment', 'Tool Interaction')
     const totalPoints = Object.values(answers).reduce((sum, answer) => sum + answer.points, 0)
     const maxPoints = questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0)
     const percentage = Math.round((totalPoints / maxPoints) * 100)
@@ -189,6 +193,7 @@ export default function SecurityScore() {
   }
 
   const resetQuiz = () => {
+    trackClick('Security Score - Restart Assessment', 'Tool Interaction')
     setAnswers({})
     setScore(null)
     setShowResults(false)
@@ -285,7 +290,7 @@ export default function SecurityScore() {
                     return (
                       <button
                         key={option.value}
-                        onClick={() => handleAnswer(q.id, option.value, option.points)}
+                        onClick={() => handleAnswer(q.id, option.value, option.points, option.text)}
                         type="button"
                         style={{
                           padding: '16px 20px',
