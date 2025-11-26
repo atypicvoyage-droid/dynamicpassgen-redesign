@@ -2,6 +2,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import SecurityScore from '@/components/SecurityScore'
 import RelatedToolsSection from '@/components/RelatedToolsSection'
+import AdPlaceholder from '@/components/AdPlaceholder'
 
 export const metadata = {
   title: 'Security Score Assessment - Test Your Password Security Habits | DynamicPassGen',
@@ -156,8 +157,18 @@ export default function SecurityScorePage() {
             </div>
           </div>
 
+          {/* Ad Placement 1 - Top of Page */}
+          <div style={{ marginBottom: '32px' }}>
+            <AdPlaceholder placementId="global_top" />
+          </div>
+
           {/* Security Score Tool */}
           <SecurityScore />
+
+          {/* Ad Placement 2 - After Tool */}
+          <div style={{ marginTop: '40px', marginBottom: '32px' }}>
+            <AdPlaceholder placementId="global_after_tool" />
+          </div>
 
           {/* Why Check Section */}
           <section style={{ marginTop: '64px' }}>
@@ -204,6 +215,11 @@ export default function SecurityScorePage() {
               </div>
             </div>
           </section>
+
+          {/* Ad Placement 3 - Mid Content */}
+          <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+            <AdPlaceholder placementId="global_mid_content" />
+          </div>
 
           {/* FAQ Section */}
           <section style={{
@@ -325,6 +341,11 @@ export default function SecurityScorePage() {
               </details>
             </div>
           </section>
+
+          {/* Ad Placement 4 - Before Related Tools */}
+          <div style={{ marginTop: '48px', marginBottom: '32px' }}>
+            <AdPlaceholder placementId="global_before_cta" />
+          </div>
 
           {/* Related Tools */}
           <RelatedToolsSection

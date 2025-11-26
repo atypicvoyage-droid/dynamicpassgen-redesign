@@ -1,6 +1,7 @@
-// app/guides/page.js - SEO OPTIMIZED WITH DARK MODE
+// app/guides/page.js - SEO OPTIMIZED WITH DARK MODE & ADS
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import AdPlaceholder from '@/components/AdPlaceholder'
 import Script from 'next/script'
 import { getAllGuides } from '@/lib/mdx'
 import GuidesClient from './GuidesClient'
@@ -90,7 +91,17 @@ export default function GuidesPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          {/* Ad Placement 1 - Top of Guides List */}
+          <div style={{ marginBottom: '32px' }}>
+            <AdPlaceholder placementId="guides_top" />
+          </div>
+
           <GuidesClient guides={guides} />
+
+          {/* Ad Placement 2 - Bottom of Guides List */}
+          <div style={{ marginTop: '48px' }}>
+            <AdPlaceholder placementId="guides_bottom" />
+          </div>
         </div>
       </main>
       

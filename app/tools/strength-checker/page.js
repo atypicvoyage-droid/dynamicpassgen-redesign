@@ -2,6 +2,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import PasswordStrengthChecker from '@/components/PasswordStrengthChecker'
 import RelatedToolsSection from '@/components/RelatedToolsSection'
+import AdPlaceholder from '@/components/AdPlaceholder'
 import Link from 'next/link'
 
 export const metadata = {
@@ -155,9 +156,18 @@ export default function StrengthCheckerPage() {
             </div>
           </div>
 
+          {/* Ad Placement 1 - Top of Page */}
+          <div style={{ marginBottom: '32px' }}>
+            <AdPlaceholder placementId="global_top" />
+          </div>
 
           {/* Password Strength Checker Tool - First Fold */}
           <PasswordStrengthChecker />
+
+          {/* Ad Placement 2 - After Tool */}
+          <div style={{ marginTop: '40px', marginBottom: '32px' }}>
+            <AdPlaceholder placementId="global_after_tool" />
+          </div>
 
           {/* How It Works Section */}
           <section style={{
@@ -284,6 +294,11 @@ export default function StrengthCheckerPage() {
             </p>
           </section>
 
+          {/* Ad Placement 3 - Mid Content */}
+          <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+            <AdPlaceholder placementId="global_mid_content" />
+          </div>
+
           {/* Why Check Password Strength Section */}
           <section style={{ marginTop: '64px' }}>
             <h2 style={{
@@ -330,7 +345,7 @@ export default function StrengthCheckerPage() {
             </div>
           </section>
 
-          {/* FAQ Section - Optimized for AI Overviews */}
+          {/* FAQ Section */}
           <section style={{
             marginTop: '64px',
             padding: '40px',
@@ -535,6 +550,11 @@ export default function StrengthCheckerPage() {
               ))}
             </div>
           </section>
+
+          {/* Ad Placement 4 - Before Related Tools */}
+          <div style={{ marginTop: '48px', marginBottom: '32px' }}>
+            <AdPlaceholder placementId="global_before_cta" />
+          </div>
 
           {/* Related Tools CTA */}
           <RelatedToolsSection

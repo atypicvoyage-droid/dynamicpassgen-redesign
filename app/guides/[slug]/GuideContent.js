@@ -1,4 +1,4 @@
-// app/guides/[slug]/GuideContent.js - MAXIMUM CONTRAST FOR DARK MODE
+// app/guides/[slug]/GuideContent.js - WITH ALL AD PLACEMENTS INCLUDING FAQ
 'use client'
 
 import { useEffect } from 'react'
@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'   
 import MDXComponents from '@/components/MDXComponents'
 import AuthorBio from '@/components/AuthorBio'
+import AdPlaceholder from '@/components/AdPlaceholder'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -52,6 +53,44 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
       });
     };
   }, [content]);
+
+  // Check if content has FAQ section
+  const hasFAQSection = content.toLowerCase().includes('## faq') || 
+                        content.toLowerCase().includes('## frequently asked questions') ||
+                        (frontmatter.faq && frontmatter.faq.length > 0);
+
+  // Split content for ad insertion
+  const contentSections = content.split('\n\n');
+  const totalParagraphs = contentSections.length;
+  
+  // Calculate strategic positions for ads
+  const afterIntroPosition = Math.min(3, Math.floor(totalParagraphs * 0.15));
+  const midContentPosition = Math.floor(totalParagraphs * 0.5);
+  
+  // Find FAQ section position if exists
+  let faqSectionIndex = -1;
+  if (hasFAQSection) {
+    faqSectionIndex = contentSections.findIndex(section => 
+      section.toLowerCase().includes('## faq') || 
+      section.toLowerCase().includes('## frequently asked questions')
+    );
+  }
+  
+  // Insert ad markers in content
+  const contentWithAds = contentSections.map((section, index) => {
+    let adPlacement = null;
+    
+    if (index === afterIntroPosition) {
+      adPlacement = '<AD_AFTER_INTRO />';
+    } else if (index === midContentPosition) {
+      adPlacement = '<AD_MID_CONTENT />';
+    } else if (faqSectionIndex > 0 && index === faqSectionIndex - 1) {
+      // Insert ad right before FAQ section
+      adPlacement = '<AD_BEFORE_FAQ />';
+    }
+    
+    return adPlacement ? `${section}\n\n${adPlacement}` : section;
+  }).join('\n\n');
 
   return (
     <div className="bg-white dark:bg-gray-950 min-h-screen">
@@ -117,6 +156,11 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
       </div>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Ad Placement 1 - Top of Article */}
+        <div style={{ marginBottom: '32px' }}>
+          <AdPlaceholder placementId="article_top" />
+        </div>
+
         {/* Table of Contents */}
         {frontmatter.tableOfContents && frontmatter.tableOfContents.length > 0 && (
           <nav className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 mb-12 shadow-sm">
@@ -155,7 +199,7 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
           </div>
         )}
 
-        {/* Markdown Content - MAXIMUM CONTRAST */}
+        {/* Markdown Content with Integrated Ads */}
         <div className="prose prose-lg dark:prose-invert max-w-none
           prose-headings:font-bold prose-headings:tracking-tight
           prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:text-gray-900 dark:prose-h2:text-white
@@ -188,10 +232,46 @@ export default function GuideContent({ content, frontmatter, featuredImage, form
               callout: MDXComponents.Callout,
               quicktips: MDXComponents.QuickTips,
               keytakeaway: MDXComponents.KeyTakeaway,
+              // Handle ad placement markers
+              p: ({ node, children, ...props }) => {
+                const text = typeof children === 'string' ? children : '';
+                
+                // Check if this paragraph contains an ad marker
+                if (text.includes('<AD_AFTER_INTRO />')) {
+                  return (
+                    <div className="not-prose my-12">
+                      <AdPlaceholder placementId="article_after_intro" />
+                    </div>
+                  );
+                }
+                
+                if (text.includes('<AD_MID_CONTENT />')) {
+                  return (
+                    <div className="not-prose my-12">
+                      <AdPlaceholder placementId="article_mid_content" />
+                    </div>
+                  );
+                }
+                
+                if (text.includes('<AD_BEFORE_FAQ />')) {
+                  return (
+                    <div className="not-prose my-12">
+                      <AdPlaceholder placementId="article_before_faq" />
+                    </div>
+                  );
+                }
+                
+                return <p {...props}>{children}</p>;
+              },
             }}
           >
-            {content}
+            {contentWithAds}
           </ReactMarkdown>
+        </div>
+
+        {/* Ad Placement - End of Article */}
+        <div style={{ marginTop: '48px', marginBottom: '32px' }}>
+          <AdPlaceholder placementId="article_end" />
         </div>
 
         <AuthorBio />

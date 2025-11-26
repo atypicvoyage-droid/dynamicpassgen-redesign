@@ -5,6 +5,7 @@ import TrustBadges from '@/components/TrustBadges'
 import UniqueFeatures from '@/components/UniqueFeatures'
 import CTASection from '@/components/CTASection'
 import FAQSection from '@/components/FAQSection'
+import AdPlaceholder from '@/components/AdPlaceholder'
 import Script from 'next/script'
 
 export const metadata = {
@@ -65,8 +66,6 @@ export default function Home() {
     ]
   };
 
-  
-
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -105,9 +104,19 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Ad Placement 1 - Top of Page (after hero) */}
+        <div style={{ maxWidth: '1200px', margin: '32px auto', padding: '0 20px' }}>
+          <AdPlaceholder placementId="global_top" />
+        </div>
+
         {/* Password Generator Tool */}
         <div id="generator" style={{ padding: '32px 20px' }}>
           <PasswordGeneratorPanel />
+        </div>
+
+        {/* Ad Placement 2 - After Generator */}
+        <div style={{ maxWidth: '1200px', margin: '32px auto', padding: '0 20px' }}>
+          <AdPlaceholder placementId="global_after_tool" />
         </div>
 
         {/* Unique Features Component */}
@@ -132,6 +141,11 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Ad Placement 3 - Mid Content */}
+        <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+          <AdPlaceholder placementId="global_mid_content" />
+        </div>
 
         {/* How It Works */}
         <section className="content-section alt-bg">
@@ -259,6 +273,8 @@ export default function Home() {
           </div>
         </section>
 
+    
+
         {/* Password Security Best Practices */}
         <section className="content-section alt-bg">
           <div className="content-container">
@@ -339,8 +355,19 @@ export default function Home() {
         {/* FAQ Section Component */}
         <FAQSection />
 
+        {/* Ad Placement 4 - Before CTA */}
+        <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+          <AdPlaceholder placementId="global_before_cta" />
+        </div>
+
         {/* CTA Section Component */}
         <CTASection />
+
+        {/* Ad Placement 5 - Above Footer */}
+        <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+          <AdPlaceholder placementId="global_footer_above" />
+        </div>
+
       </main>
       <Footer />
     </>

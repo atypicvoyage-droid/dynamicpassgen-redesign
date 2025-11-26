@@ -1,7 +1,8 @@
-// app/layout.js - ENHANCED VERSION WITH STRONG SEO
+// app/layout.js - WITH GA, ADSENSE, AND SILKTIDE CONSENT MANAGER (FINAL)
 import './globals.css';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import { AdsenseProvider } from '../context/AdsenseContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -109,7 +110,6 @@ export const metadata = {
   
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
-    // Add when ready: yandex, bing, etc.
   },
   
   category: 'technology',
@@ -133,6 +133,13 @@ export default function RootLayout({ children }) {
         <link 
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" 
           rel="stylesheet" 
+        />
+
+        {/* Silktide Consent Manager CSS */}
+        <link 
+          rel="stylesheet" 
+          id="silktide-consent-manager-css" 
+          href="/cookie-banner/silktide-consent-manager.css" 
         />
 
         {/* Structured Data - Organization */}
@@ -178,33 +185,60 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Google Analytics */}
+        {/* Google Analytics with Consent Mode - Only loads in production */}
         {GA_MEASUREMENT_ID && (
           <>
             <Script 
-              strategy="afterInteractive" 
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-            />
-            <Script
-              id="google-analytics"
+              id="gtag-base"
               strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${GA_MEASUREMENT_ID}', {
-                    page_path: window.location.pathname,
-                    send_page_view: true,
-                    anonymize_ip: true
+                  
+                  // Default consent to denied
+                  gtag('consent', 'default', {
+                    'analytics_storage': 'denied',
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'wait_for_update': 500
                   });
+                  
+                  gtag('js', new Date());
+                `
+              }}
+            />
+            <Script 
+              strategy="afterInteractive" 
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+            />
+            <Script
+              id="google-analytics-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  // Check if localhost
+                  var isLocalhost = window.location.hostname === 'localhost' || 
+                                    window.location.hostname === '127.0.0.1' ||
+                                    window.location.hostname === '';
+                  
+                  if (!isLocalhost) {
+                    gtag('config', '${GA_MEASUREMENT_ID}', {
+                      page_path: window.location.pathname,
+                      send_page_view: true,
+                      anonymize_ip: true
+                    });
+                  } else {
+                    console.log('[GA] Running in development mode - analytics disabled');
+                  }
                 `
               }}
             />
           </>
         )}
 
-        {/* Google AdSense - Add when approved */}
+        {/* Google AdSense - Will be enabled when approved */}
         {ADSENSE_CLIENT_ID && (
           <Script
             id="adsense-script"
@@ -214,10 +248,132 @@ export default function RootLayout({ children }) {
             strategy="afterInteractive"
           />
         )}
+
+        {/* Silktide Consent Manager Script */}
+        <Script 
+          src="/cookie-banner/silktide-consent-manager.js" 
+          strategy="afterInteractive"
+        />
+        
+        {/* Silktide Cookie Banner Configuration */}
+        <Script
+          id="silktide-config"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              function initializeSilktideBanner() {
+                if (typeof silktideCookieBannerManager === 'undefined') {
+                  setTimeout(initializeSilktideBanner, 100);
+                  return;
+                }
+                
+                try {
+                  silktideCookieBannerManager.updateCookieBannerConfig({
+                    background: {
+                      showBackground: true
+                    },
+                    cookieIcon: {
+                      position: "bottomLeft"
+                    },
+                    cookieTypes: [
+                      {
+                        id: "necessary",
+                        name: "Necessary",
+                        description: "<p>These cookies are necessary for the website to function properly and cannot be switched off.</p>",
+                        required: true,
+                        onAccept: function() {
+                          console.log('Necessary cookies accepted');
+                        }
+                      },
+                      {
+                        id: "analytics",
+                        name: "Analytics",
+                        description: "<p>These cookies help us improve the site by tracking which pages are most popular.</p>",
+                        required: true,
+                        onAccept: function() {
+                          console.log('Analytics cookies accepted');
+                          if (typeof gtag !== 'undefined') {
+                            gtag('consent', 'update', {
+                              'analytics_storage': 'granted'
+                            });
+                            gtag('event', 'consent_accepted_analytics');
+                          }
+                        },
+                        onReject: function() {
+                          console.log('Analytics cookies rejected');
+                          if (typeof gtag !== 'undefined') {
+                            gtag('consent', 'update', {
+                              'analytics_storage': 'denied'
+                            });
+                          }
+                        }
+                      },
+                      {
+                        id: "advertising",
+                        name: "Advertising",
+                        description: "<p>These cookies provide extra features and personalization to improve your experience.</p>",
+                        required: false,
+                        onAccept: function() {
+                          console.log('Advertising cookies accepted');
+                          if (typeof gtag !== 'undefined') {
+                            gtag('consent', 'update', {
+                              'ad_storage': 'granted',
+                              'ad_user_data': 'granted',
+                              'ad_personalization': 'granted'
+                            });
+                            gtag('event', 'consent_accepted_advertising');
+                          }
+                        },
+                        onReject: function() {
+                          console.log('Advertising cookies rejected');
+                          if (typeof gtag !== 'undefined') {
+                            gtag('consent', 'update', {
+                              'ad_storage': 'denied',
+                              'ad_user_data': 'denied',
+                              'ad_personalization': 'denied'
+                            });
+                          }
+                        }
+                      }
+                    ],
+                    text: {
+                      banner: {
+                        description: "<p>We use cookies to enhance your experience and analyze traffic. <a href='/privacy' target='_blank'>Cookie Policy</a></p>",
+                        acceptAllButtonText: "Accept all",
+                        acceptAllButtonAccessibleLabel: "Accept all cookies",
+                        rejectNonEssentialButtonText: "Reject non-essential",
+                        rejectNonEssentialButtonAccessibleLabel: "Reject non-essential cookies",
+                        preferencesButtonText: "Preferences",
+                        preferencesButtonAccessibleLabel: "Toggle cookie preferences"
+                      },
+                      preferences: {
+                        title: "Customize your cookie preferences",
+                        description: "<p>We respect your privacy. Choose which cookies you allow.</p>",
+                        creditLinkText: "Get this banner for free",
+                        creditLinkAccessibleLabel: "Get this banner for free"
+                      }
+                    }
+                  });
+                  console.log('Silktide banner initialized');
+                } catch (error) {
+                  console.error('Error initializing Silktide banner:', error);
+                }
+              }
+              
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeSilktideBanner);
+              } else {
+                initializeSilktideBanner();
+              }
+            `
+          }}
+        />
       </head>
       
       <body className="bg-slate-bg text-text-dark dark:bg-navy-dark dark:text-text-secondary min-h-screen font-inter transition-colors duration-300 antialiased">
-        {children}
+        <AdsenseProvider>
+          {children}
+        </AdsenseProvider>
       </body>
     </html>
   );
