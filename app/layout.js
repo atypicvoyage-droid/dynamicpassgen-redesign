@@ -1,4 +1,4 @@
-// app/layout.js - WITH GA, ADSENSE, AND SILKTIDE CONSENT MANAGER (FINAL)
+// app/layout.js - WITH GA, ADSENSE, SILKTIDE CONSENT, AND FAVICONS
 import './globals.css';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
@@ -83,9 +83,10 @@ export const metadata = {
     },
   },
   
+  // UPDATED: Favicon paths pointing to public/images/favicon/
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/images/favicon/favicon.ico', sizes: 'any' },
       { url: '/images/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/images/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
     ],
@@ -97,7 +98,8 @@ export const metadata = {
     ]
   },
   
-  manifest: '/site.webmanifest',
+  // UPDATED: Manifest path
+  manifest: '/images/favicon/site.webmanifest',
   
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
@@ -115,9 +117,11 @@ export const metadata = {
   category: 'technology',
 };
 
+
 export default function RootLayout({ children }) {
   const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
   const ADSENSE_CLIENT_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || '';
+
 
   return (
     <html lang="en" className={inter.variable}>
