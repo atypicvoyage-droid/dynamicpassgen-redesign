@@ -1,3 +1,4 @@
+'use client'
 export default function CalloutBox({ type = 'info', title, children }) {
   const styles = {
     info: {

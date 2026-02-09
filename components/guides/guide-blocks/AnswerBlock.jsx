@@ -1,3 +1,4 @@
+'use client'
 export default function AnswerBlock({ children, question }) {
   return (
     <div className="answer-block" itemScope itemType="https://schema.org/Question">

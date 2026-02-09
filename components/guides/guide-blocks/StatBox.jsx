@@ -1,3 +1,4 @@
+'use client'
 export default function StatBox({ value, label, source, trend, icon }) {
   return (
     <div className="stat-box">

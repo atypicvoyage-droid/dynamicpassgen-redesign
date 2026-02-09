@@ -1,3 +1,4 @@
+'use client'
 export default function ComparisonTable({ title, headers = ['Before', 'After'], data }) {
   return (
     <div className="comparison-table-wrapper">

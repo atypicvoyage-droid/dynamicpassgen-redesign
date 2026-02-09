@@ -1,3 +1,4 @@
+'use client'
 export default function Hero({ title, subtitle, image, category, difficulty, readTime }) {
   return (
     <header className="hero">

@@ -14,69 +14,84 @@ export default function CodeBlock({ code, language = 'javascript', filename, sho
   return (
     <div className="code-block">
       <div className="code-header">
-        {filename && <span className="code-filename">{filename}</span>}
+        {filename && <span className="code-filename">📄 {filename}</span>}
         <span className="code-language">{language}</span>
         <button className="copy-button" onClick={handleCopy} title="Copy code">
           {copied ? (
             <span className="copy-feedback">✓ Copied!</span>
           ) : (
-            <span>Copy</span>
+            <span>📋 Copy</span>
           )}
         </button>
       </div>
       <div className="code-content">
-        <pre className={showLineNumbers ? 'line-numbers' : ''}>
-          <code className={`language-${language}`}>{code}</code>
+        <pre>
+          <code>{code}</code>
         </pre>
       </div>
 
       <style jsx>{`
         .code-block {
-          background: #1e293b;
-          border-radius: 0.5rem;
+          background: #0f172a;
+          border-radius: 0.75rem;
           overflow: hidden;
-          margin: 1.5rem 0;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          margin: 2rem 0;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          border: 1px solid #334155;
         }
 
         .code-header {
           display: flex;
           align-items: center;
           gap: 1rem;
-          padding: 0.75rem 1rem;
-          background: #0f172a;
-          border-bottom: 1px solid #334155;
+          padding: 0.875rem 1.25rem;
+          background: #1e293b;
+          border-bottom: 1px solid #475569;
         }
 
         .code-filename {
           flex: 1;
           font-size: 0.875rem;
-          font-family: 'Courier New', Courier, monospace;
-          color: #94a3b8;
+          font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+          color: #cbd5e1;
+          font-weight: 500;
         }
 
         .code-language {
           font-size: 0.75rem;
           text-transform: uppercase;
-          color: #64748b;
-          font-weight: 500;
-          letter-spacing: 0.05em;
+          color: #94a3b8;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          background: #334155;
+          padding: 0.25rem 0.625rem;
+          border-radius: 0.25rem;
         }
 
         .copy-button {
-          background: #334155;
-          color: #e2e8f0;
+          background: #3b82f6;
+          color: white;
           border: none;
-          padding: 0.375rem 0.75rem;
-          border-radius: 0.25rem;
+          padding: 0.5rem 1rem;
+          border-radius: 0.375rem;
           font-size: 0.8125rem;
           cursor: pointer;
           transition: all 0.2s;
           font-family: inherit;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 0.375rem;
         }
 
         .copy-button:hover {
-          background: #475569;
+          background: #2563eb;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .copy-button:active {
+          transform: translateY(0);
         }
 
         .copy-feedback {
@@ -85,47 +100,64 @@ export default function CodeBlock({ code, language = 'javascript', filename, sho
 
         .code-content {
           overflow-x: auto;
-          padding: 1rem;
+          padding: 1.5rem;
+          background: #0f172a;
         }
 
         pre {
           margin: 0;
-          font-family: 'Courier New', Courier, monospace;
+          font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
           font-size: 0.875rem;
-          line-height: 1.6;
+          line-height: 1.7;
+          color: #e2e8f0;
         }
 
         code {
           color: #e2e8f0;
           font-family: inherit;
+          white-space: pre;
         }
 
-        .line-numbers {
-          counter-reset: line;
+        /* Custom scrollbar */
+        .code-content::-webkit-scrollbar {
+          height: 8px;
         }
 
-        .line-numbers code {
-          display: block;
+        .code-content::-webkit-scrollbar-track {
+          background: #1e293b;
         }
 
-        .line-numbers code::before {
-          counter-increment: line;
-          content: counter(line);
-          display: inline-block;
-          width: 2.5rem;
-          margin-right: 1rem;
-          color: #64748b;
-          text-align: right;
-          user-select: none;
+        .code-content::-webkit-scrollbar-thumb {
+          background: #475569;
+          border-radius: 4px;
+        }
+
+        .code-content::-webkit-scrollbar-thumb:hover {
+          background: #64748b;
         }
 
         @media (max-width: 768px) {
+          .code-block {
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+          }
+
           .code-header {
-            padding: 0.625rem 0.875rem;
+            padding: 0.75rem 1rem;
+            flex-wrap: wrap;
+          }
+
+          .code-filename {
+            font-size: 0.8125rem;
+          }
+
+          .copy-button {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
           }
 
           .code-content {
-            padding: 0.875rem;
+            padding: 1rem;
           }
 
           pre {

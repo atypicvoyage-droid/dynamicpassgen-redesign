@@ -17,6 +17,7 @@ export default function StandardGuide({ metadata, children }) {
     setTocItems(items)
 
     // Intersection observer for active section tracking
+    // Adjust rootMargin to account for sticky header
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -25,13 +26,32 @@ export default function StandardGuide({ metadata, children }) {
           }
         })
       },
-      { rootMargin: '-100px 0px -80% 0px' }
+      { 
+        rootMargin: '-120px 0px -60% 0px', // Increased top margin for header
+        threshold: 0.5
+      }
     )
 
     headings.forEach((heading) => observer.observe(heading))
 
     return () => observer.disconnect()
   }, [children])
+
+  const handleTocClick = (e, id) => {
+    e.preventDefault()
+    const element = document.getElementById(id)
+    if (element) {
+      // Calculate offset accounting for sticky header (typically 80-100px)
+      const headerOffset = 100
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+  }
 
   return (
     <article className="guide-container">
@@ -70,13 +90,7 @@ export default function StandardGuide({ metadata, children }) {
                     <a
                       href={`#${item.id}`}
                       className={activeSection === item.id ? 'active' : ''}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        document.getElementById(item.id)?.scrollIntoView({
-                          behavior: 'smooth',
-                          block: 'start',
-                        })
-                      }}
+                      onClick={(e) => handleTocClick(e, item.id)}
                     >
                       {item.text}
                     </a>
@@ -92,7 +106,7 @@ export default function StandardGuide({ metadata, children }) {
               {metadata.category && (
                 <div className="meta-item">
                   <span className="meta-label">Category:</span>
-                  <span className="badge badge-{metadata.category}">
+                  <span className={`badge badge-${metadata.category}`}>
                     {metadata.category}
                   </span>
                 </div>
@@ -176,8 +190,8 @@ export default function StandardGuide({ metadata, children }) {
 
         .guide-sidebar {
           position: sticky;
-          top: 2rem;
-          max-height: calc(100vh - 4rem);
+          top: 120px; /* Adjust this to match your header height + padding */
+          max-height: calc(100vh - 140px);
           overflow-y: auto;
         }
 
@@ -290,6 +304,24 @@ export default function StandardGuide({ metadata, children }) {
         .guide-content {
           min-width: 0;
           max-width: 800px;
+        }
+
+        /* Custom scrollbar for sidebar */
+        .guide-sidebar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .guide-sidebar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .guide-sidebar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 3px;
+        }
+
+        .guide-sidebar::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
         }
 
         @media (max-width: 1024px) {

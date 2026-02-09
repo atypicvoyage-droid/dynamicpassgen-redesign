@@ -1,3 +1,5 @@
+'use client'
+
 export default function Section({ id, children, className = '' }) {
   return (
     <section id={id} className={`guide-section ${className}`}>
@@ -102,4 +104,20 @@ export default function Section({ id, children, className = '' }) {
       `}</style>
     </section>
   )
+}
+
+// Helper components - exported separately
+export function H2({ children, id }) {
+  // Auto-generate ID from text if not provided
+  const autoId = id || (typeof children === 'string' ? children.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '')
+  
+  return <h2 id={autoId}>{children}</h2>
+}
+
+export function H3({ children }) {
+  return <h3>{children}</h3>
+}
+
+export function H4({ children }) {
+  return <h4>{children}</h4>
 }
