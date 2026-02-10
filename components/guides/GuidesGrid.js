@@ -25,11 +25,28 @@ export default function GuidesGrid({ guides, categories }) {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase()
-        return (
-          guide.title.toLowerCase().includes(query) ||
-          guide.description.toLowerCase().includes(query) ||
-          guide.keywords.toLowerCase().includes(query)
-        )
+        
+        // Search in title
+        if (guide.title?.toLowerCase().includes(query)) return true
+        
+        // Search in description
+        if (guide.description?.toLowerCase().includes(query)) return true
+        
+        // Search in keywords (handle array)
+        if (guide.keywords) {
+          const keywordsText = Array.isArray(guide.keywords) 
+            ? guide.keywords.join(' ').toLowerCase()
+            : guide.keywords.toLowerCase()
+          if (keywordsText.includes(query)) return true
+        }
+        
+        // Search in category
+        if (guide.category?.toLowerCase().includes(query)) return true
+        
+        // Search in author
+        if (guide.author?.toLowerCase().includes(query)) return true
+        
+        return false
       }
       
       return true
