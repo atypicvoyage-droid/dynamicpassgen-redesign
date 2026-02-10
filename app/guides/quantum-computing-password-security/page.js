@@ -6,7 +6,8 @@ import {
   H3,
   AnswerBlock, 
   CalloutBox,
-  ComparisonTable
+  ComparisonTable,
+  CodeBlock
 } from '@/components/guides/guide-blocks'
 import { metadata } from './metadata'
 
@@ -17,7 +18,7 @@ export default function QuantumGuide() {
     <StandardGuide metadata={metadata}>
       <Hero
         title={metadata.title}
-        subtitle="Q-Day is coming. Is your cryptography ready for the end of RSA?"
+        subtitle="Q-Day is coming. The encryption that protects the internet is about to break. Here is your survival guide to the Post-Quantum era."
         category={metadata.category}
         difficulty={metadata.difficulty}
         readTime={metadata.readTime}
@@ -25,44 +26,101 @@ export default function QuantumGuide() {
       />
 
       <AnswerBlock question="What is Post-Quantum Cryptography (PQC)?">
-        PQC refers to cryptographic algorithms (like CRYSTALS-Kyber) designed to be secure 
-        against both classical and quantum computers. It aims to replace current standards 
-        (RSA, ECC) which will be broken by Shor's algorithm once sufficiently powerful 
-        quantum computers exist (predicted ~2030).
+        Post-Quantum Cryptography (PQC) refers to new cryptographic algorithms (standardized by NIST in 2024) 
+        designed to withstand attacks from large-scale quantum computers. Current standards like RSA and 
+        Elliptic Curve (ECC) rely on math problems that quantum computers can solve trivially using 
+        <strong>Shor's Algorithm</strong>. PQC uses different math (lattice-based) that remains hard 
+        for both classical and quantum machines.
       </AnswerBlock>
 
-      <Section id="threat">
-        <H2>Harvest Now, Decrypt Later</H2>
+      <Section id="the-threat">
+        <H2>The Threat: Harvest Now, Decrypt Later (HNDL)</H2>
         <p>
-          Why worry now? Attackers are stealing encrypted data TODAY. They can't read it yet, 
-          but they store it until quantum computers are available to decrypt it.
+          "I don't need to worry until 2030, right?" <strong>Wrong.</strong>
         </p>
-        <CalloutBox type="warning" title="Long-Term Secrets at Risk">
-          <p>
-            Medical records, state secrets, and trade secrets encrypted today with standard 
-            TLS/RSA are already vulnerable to future decryption.
-          </p>
+        <p>
+          Nation-state adversaries are currently scraping encrypted traffic (VPNs, TLS sessions) and storing 
+          it in massive data centers. This data is meaningless static today. But in 5-10 years, when a 
+          cryptographically relevant quantum computer (CRQC) comes online, they will decrypt it retroactively.
+        </p>
+        <CalloutBox type="error" title="What is at Risk?">
+          <ul>
+            <li>Social Security Numbers & Genomes (Lifetime secrecy required)</li>
+            <li>Trade Secrets & IP (20-year secrecy)</li>
+            <li>State Secrets & Intelligence</li>
+          </ul>
         </CalloutBox>
       </Section>
 
-      <Section id="standards">
-        <H2>NIST PQC Standards</H2>
+      <Section id="the-algorithms">
+        <H2>The New NIST Standards (FIPS 203, 204, 205)</H2>
         <p>
-          NIST has selected the algorithms to replace RSA:
+          NIST has officially finalized the first batch of PQC algorithms. You need to know these names:
         </p>
-        <ul>
-          <li><strong>CRYSTALS-Kyber:</strong> For general encryption (key encapsulation).</li>
-          <li><strong>CRYSTALS-Dilithium:</strong> For digital signatures.</li>
-          <li><strong>SPHINCS+:</strong> Stateless hash-based signatures.</li>
-        </ul>
+        
+        <H3>1. ML-KEM (formerly CRYSTALS-Kyber)</H3>
+        <p>
+          <strong>Use Case:</strong> General Encryption / Key Encapsulation. <br/>
+          Replaces: RSA key exchange, ECDH.<br/>
+          <em>Pros: Fast, small keys. Cons: Larger than ECC.</em>
+        </p>
+
+        <H3>2. ML-DSA (formerly CRYSTALS-Dilithium)</H3>
+        <p>
+          <strong>Use Case:</strong> Digital Signatures.<br/>
+          Replaces: RSA signatures, ECDSA.<br/>
+          <em>Pros: Strong security, fast verification.</em>
+        </p>
+
+        <H3>3. SLH-DSA (formerly SPHINCS+)</H3>
+        <p>
+          <strong>Use Case:</strong> Backup Signature Scheme.<br/>
+          <em>Stateless hash-based signature. Slower, but very conservative security.</em>
+        </p>
       </Section>
 
-      <Section id="preparation">
-        <H2>Preparing Passwords</H2>
+      <Section id="password-impact">
+        <H2>Are My Passwords Vulnerable?</H2>
         <p>
-          Good news: Symmetric encryption (AES) and hashing (SHA-256, Argon2) are mostly 
-          quantum-resistant. You just need to double key lengths (AES-128 → AES-256).
+          Surprisingly, <strong>No</strong>.
         </p>
+        <p>
+          Quantum computers break asymmetric crypto (RSA/ECC). They do <em>not</em> effectively break symmetric 
+          crypto (AES) or Hashing (SHA-256, Argon2).
+        </p>
+        <ComparisonTable
+          title="Quantum Impact on Crypto"
+          headers={['Algorithm Type', 'Current Standard', 'Quantum Impact', 'Fix']}
+          data={[
+            {
+              old: 'Public Key (Asymmetric)',
+              new: 'RSA-2048',
+              extra: 'BROKEN (Shor\'s Algo)',
+              fix: 'Migrate to ML-KEM'
+            },
+            {
+              old: 'Symmetric Encryption',
+              new: 'AES-128',
+              extra: 'Weakened (Grover\'s Algo)',
+              fix: 'Double key size to AES-256'
+            },
+            {
+              old: 'Hashing',
+              new: 'SHA-256 / Argon2',
+              extra: 'Minimal Impact',
+              fix: 'Safe (Keep using SHA-256+)'
+            }
+          ]}
+        />
+      </Section>
+
+      <Section id="action-plan">
+        <H2>Your PQC Action Plan</H2>
+        <ol>
+          <li><strong>Inventory:</strong> Where are you using RSA/ECC? (TLS certificates, VPN keys, SSH keys).</li>
+          <li><strong>Vendor Assessment:</strong> Ask AWS, Cloudflare, and Microsoft for their PQC roadmaps.</li>
+          <li><strong>Hybrid Mode:</strong> Implement "Hybrid" encryption (Classical + Quantum) immediately for long-term data.</li>
+        </ol>
       </Section>
     </StandardGuide>
   )
