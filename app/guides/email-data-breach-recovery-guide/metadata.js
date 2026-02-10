@@ -1,17 +1,18 @@
 export const metadata = {
   title: 'My Email Was In a Data Breach: 5 Immediate Steps to Take',
-  description: "Don't panic. Just act. If your email appeared in a 'Have I Been Pwned' alert or a dark web scan, here's your step-by-step battle plan to lock down your identity.",
+  description: 'Don\'t panic. Just act. If your email appeared in a "Have I Been Pwned" alert or a dark web scan, here is your step-by-step battle plan to lock down your identity.',
+  keywords: 'data breach checklist, email hack recovery, change password immediately, credit freeze guide, identity monitoring',
   author: 'DynamicPassGen Security Team',
-  published: '2025-11-14',
-  updated: '2026-02-09',
   category: 'threats',
   difficulty: 'Beginner',
-  readTime: 8,
+  readTime: '8',
+  published: '2025-11-14',
+  updated: '2026-02-10',
   image: '/images/guides/data-breach-recovery-hero.jpg',
-  keywords: 'data breach checklist, email hack recovery, change password immediately, credit freeze guide, identity monitoring'
+  slug: 'email-data-breach-recovery-guide'
 }
 
-export async function generateMetadata() {
+export function generateMetadata() {
   return {
     title: `${metadata.title} | DynamicPassGen - Secure Password Tools`,
     description: metadata.description,
@@ -23,14 +24,18 @@ export async function generateMetadata() {
       type: 'article',
       publishedTime: metadata.published,
       modifiedTime: metadata.updated,
-      authors: [metadata.author],
-      images: [metadata.image],
+      images: [{
+        url: `https://dynamicpassgen.com${metadata.image}`,
+        width: 1200,
+        height: 630,
+        alt: metadata.title
+      }]
     },
     twitter: {
       card: 'summary_large_image',
       title: metadata.title,
       description: metadata.description,
-      images: [metadata.image],
-    },
+      images: [`https://dynamicpassgen.com${metadata.image}`]
+    }
   }
 }
