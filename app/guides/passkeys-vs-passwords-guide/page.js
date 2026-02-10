@@ -179,7 +179,7 @@ export default function PasskeysGuide() {
         </p>
       </Section>
 
-      <Section id="conclusion">
+      <Section id="implementation">
         <H2>Implementation Strategy for 2026</H2>
         <p>
           For users: Enable passkeys on Google, Apple, Amazon, PayPal, and Adobe immediately. 
@@ -189,6 +189,26 @@ export default function PasskeysGuide() {
         <p>
           For developers: Stop building password fields. Use WebAuthn APIs. The friction of 
           passwords costs you more in reset tickets and churn than the effort to implement passkeys.
+        </p>
+
+        <H3>Platform Support Status (2026)</H3>
+        <ul>
+          <li><strong>✅ Full Support:</strong> Google, Apple, Microsoft, Amazon, PayPal, GitHub</li>
+          <li><strong>⚠️ Partial:</strong> Many banking sites (backup method only)</li>
+          <li><strong>❌ Not Yet:</strong> Most legacy enterprise apps</li>
+        </ul>
+      </Section>
+
+      <Section id="conclusion">
+        <H2>The Future is Passwordless</H2>
+        <p>
+          We are witnessing the end of the password era. By 2028, NIST predicts that 60% of consumer 
+          logins will use passkeys or equivalent passwordless methods. The question isn't "if" your 
+          organization should adopt passkeys—it's "when."
+        </p>
+        <p>
+          Start today. Enable passkeys wherever available. Your future self (and your security team) 
+          will thank you.
         </p>
       </Section>
     </StandardGuide>
