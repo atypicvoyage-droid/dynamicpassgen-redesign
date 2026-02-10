@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const categoryColors = {
   fundamentals: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
@@ -14,25 +15,49 @@ const difficultyColors = {
   Advanced: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
 }
 
+const categoryIcons = {
+  compliance: '📋',
+  fundamentals: '📖',
+  enterprise: '🏢',
+  threats: '⚠️',
+  tools: '🛠️'
+}
+
 export default function GuideCard({ guide }) {
   const categoryColor = categoryColors[guide.category] || categoryColors.fundamentals
   const difficultyColor = difficultyColors[guide.difficulty] || difficultyColors.Beginner
+  const fallbackIcon = categoryIcons[guide.category] || '📖'
   
   return (
     <Link href={guide.url}>
       <article className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden h-full flex flex-col hover:scale-[1.02]">
-        {/* Image placeholder - can be replaced with actual images later */}
-        <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
-              {guide.category === 'compliance' && '📋'}
-              {guide.category === 'fundamentals' && '📖'}
-              {guide.category === 'enterprise' && '🏢'}
-              {guide.category === 'threats' && '⚠️'}
-              {guide.category === 'tools' && '🛠️'}
-            </div>
-          </div>
+        {/* Featured Image */}
+        <div className="h-48 relative overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600">
+          {guide.image ? (
+            <>
+              {/* Actual image from metadata */}
+              <Image
+                src={guide.image}
+                alt={guide.title}
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={false}
+              />
+              {/* Overlay for better text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            </>
+          ) : (
+            // Fallback gradient with icon if no image
+            <>
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
+                  {fallbackIcon}
+                </div>
+              </div>
+            </>
+          )}
         </div>
         
         {/* Content */}
