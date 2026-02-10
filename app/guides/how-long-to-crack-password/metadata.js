@@ -1,15 +1,15 @@
 export const metadata = {
-  title: 'HIPAA Compliant Passwords: What Healthcare Providers Need to Know',
-  description: 'Stop worrying about audits. Here is the definitive guide to HIPAA password requirements for 2025, covering ePHI protection, multi-factor authentication, and access controls for healthcare.',
-  keywords: 'HIPAA compliant passwords, ePHI security requirements, healthcare data protection, HIPAA password policy 2025',
+  title: 'How Long Does It Take to Crack Your Password? (2025 Benchmarks)',
+  description: 'Think your 8-character password is safe? Think again. We analyze 2025 GPU benchmarks to show exactly how fast a hacker can crack your credentials using modern hardware.',
+  keywords: 'how long to crack password, brute force calculator 2025, RTX 4090 hashcat benchmarks, password strength table, gpu cracking speed',
   author: 'DynamicPassGen Security Team',
-  category: 'compliance',
+  category: 'fundamentals',
   difficulty: 'Intermediate',
-  readTime: '10',
-  published: '2025-11-12',
+  readTime: '9',
+  published: '2025-11-25',
   updated: '2026-02-10',
-  image: '/images/guides/hipaa-compliance-hero.jpg',
-  slug: 'hipaa-compliant-password-policy'
+  image: '/images/guides/password-cracking-benchmarks-hero.jpg',
+  slug: 'how-long-to-crack-password'
 }
 
 export function generateMetadata() {
